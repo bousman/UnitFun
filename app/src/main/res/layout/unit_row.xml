@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/unitTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/horizontal_unit_padding"
+        android:layout_marginTop="@dimen/vertical_unit_spacing"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/dummy"
+        />
+
+    <ImageView
+        android:contentDescription="@string/more_info"
+        android:id="@+id/infoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/unit_margin_right"
+        android:layout_alignBottom="@id/unitTitle"
+        android:minHeight="8dp"
+        android:minWidth="8dp"
+        android:src="@android:drawable/ic_menu_info_details"/>
+
+    <EditText android:id="@+id/value"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:layout_marginLeft="@dimen/horizontal_unit_padding"
+              android:layout_marginBottom="@dimen/vertical_unit_spacing"
+              android:layout_marginRight="@dimen/unit_margin_right"
+              android:layout_below="@id/unitTitle"
+              android:background="@drawable/unit_states"
+              android:inputType="numberSigned|numberDecimal"/>
+
+<!-- future work - dynamically put a "clear" button inside the EditText
+     that is being typed in by the user
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignRight="@+id/value"
+        android:layout_marginRight="4dp"
+        android:layout_alignBottom="@id/value"
+        android:src="@android:drawable/ic_notification_clear_all" /> -->
+
+</RelativeLayout>
