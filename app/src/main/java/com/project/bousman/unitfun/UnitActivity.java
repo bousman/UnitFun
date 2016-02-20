@@ -16,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -115,7 +116,9 @@ public class UnitActivity extends AppCompatActivity {
         // up/back in the toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar bar = getSupportActionBar();
+        if ( bar != null )
+            bar.setDisplayHomeAsUpEnabled(true);
 
         // get "settings" value for keeping unit values.  If true then will try to set
         // the reference value to what it was when we were last here
