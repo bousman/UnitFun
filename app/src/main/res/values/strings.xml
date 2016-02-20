@@ -7,7 +7,7 @@
     <string name="about">About</string>
     <string name="dummy">Dummy</string>
     <string name="more_info">more info</string>
-    <string name="button_ok">Ok</string>
+    <string name="button_ok">OK</string>
 
     <!--
         All unit conversion data is specified in string array "data".
@@ -97,6 +97,13 @@
             Fahrenheit.|1.8000000000E+00|491.67</item>
 
         <item>Acceleration</item>
+		<item>Meter per second squared (m/s2)| |1.0000000000E+00</item>
+		<item>Centimeter per second squared (cm/s2)| |1.0000000000E+02</item>
+		<item>Millimeter per second squared (mm/s2)| |1.0000000000E+03</item>
+		<item>Foot per second squared (ft/s2)| |3.2808530000E+00</item>
+		<item>Free Fall (g)| |1.0197160000E+00</item>
+		<item>Mile per hour second (mi/(hs))| |2.2369400000E+00</item>
+		
         <item>Angle</item>
         <item>Area</item>
         <item>Density</item>

@@ -29,6 +29,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -162,8 +163,24 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 b.putString("unit_title",title);
             } else {
                 // convert string into a "unit" object and add to array list
-                Unit unit = new Unit(ii,parsed);
-                unitLines.add(unit);
+                try {
+                    Unit unit = new Unit(ii, parsed);
+                    unitLines.add(unit);
+                }  catch (Exception e) {
+                    Log.d("data problem", "***************************************************");
+                    Log.d("data problem", conversionData[ii]);
+                    Log.d("data problem", "***************************************************");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("Error in data input strings - see log!")
+                            .setTitle("Data Error");
+                    builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User clicked OK button - just close it
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
             }
         }
         // at end of data array there is one more set of data to add to bundle

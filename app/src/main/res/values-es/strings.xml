@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">UnitFun</string>
-    <string name="app_author">Autor: Brian Bousman</string>
-    <string name="title_unit_activity">Unit Conversion</string>
+    <string name="app_author">Author: Brian Bousman</string>
+    <string name="title_unit_activity">Conversión de unidades</string>
     <string name="title_settings_activity">Ajustes</string>
     <string name="settings">Ajustes</string>
-    <string name="about">Sobre</string>
+    <string name="about">Acerca de</string>
     <string name="dummy">Dummy</string>
     <string name="more_info">más información</string>
-    <string name="button_ok">Sí</string>
+    <string name="button_ok">Aceptar</string>
 
     <!--
         All unit conversion data is specified in string array "data".
@@ -46,72 +46,79 @@
         Temperature Celsius
     -->
     <string-array name="data">
-        <item>Largo</item>
+        <item>Longitud</item>
         <item>Centímetro (cm)|Una centésima parte de un metro|1.0000000000E+02</item>
         <item>Diámetro de la Tierra| |7.8476735179E-08</item>
-        <item>Foot (ft)|By international agreement is exactly 0.3048 meters|3.2808398950E+00</item>
-        <item>Furlong|One eighth of a mile or 660 feet|4.9709700000E-03</item>
-        <item>Inch (in)|There are twelve inches in a foot and thirty six inches in a yard|3.937007874E+01</item>
-        <item>Kilometer (km)|Equal to one thousand meters|1.0000000000E-03</item>
-        <item>Light Year|The distance that light travels in vacuum in one Julian year, about 9 trillion kilometers|1.0570230000E-16</item>
-        <item>Meter (m)|The base unit of length in the International System of Units (SI)|1.0000000000E+00</item>
-        <item>Mile (mi)|Equal to 1,760 yards and exactly 1,609.344 meters by international agreement|6.2137119224E-04</item>
-        <item>Millimeter (mm)|One thousandth of a meter.  There are 25.4 mm in an inch|1.0000000000E+03</item>
-        <item>Nautical Mile|Exactly 1,852 meters or about 6,076 feet|5.3995680346E-04</item>
-        <item>Parsec|About 3.26 light years|3.2407790000E-17</item>
-        <item>Yard (yd)|Three feet or thirty six inches.  By international agreement of 1959 it is exactly 0.9144 meters|1.0936132983E+00</item>
+        <item>Pie (ft)|Por acuerdo internacional es exactamente 0,3048 metros|3.2808398950E+00</item>
+        <item>Furlong|Una octava parte de una milla o 660 pies|4.9709700000E-03</item>
+        <item>pulgadas (in)|Hay doce pulgadas en un pie y treinta y seis pulgadas de un patio|3.937007874E+01</item>
+        <item>kilómetro (km)|Igual a mil metros|1.0000000000E-03</item>
+        <item>Light Year|La distancia que recorre la luz en el vacío en un año Juliano, cerca de 9 kilómetros trillón|1.0570230000E-16</item>
+        <item>metro (m)|La unidad básica de longitud en el Sistema Internacional de Unidades (SI)|1.0000000000E+00</item>
+        <item>Milla (mi)|Igualdad para 1.760 yardas y exactamente 1,609.344 metros por acuerdo internacional|6.2137119224E-04</item>
+        <item>milímetros (mm)|La milésima parte de un metro. Hay 25,4 mm de una pulgada|1.0000000000E+03</item>
+        <item>milla náutica|Exactamente 1.852 metros o 6.076 pies sobre|5.3995680346E-04</item>
+        <item>Parsec|Acerca de 3,26 años luz|3.2407790000E-17</item>
+        <item>yarda (yd)|Tres pies o treinta y seis pulgadas. Por acuerdo internacional de 1959 es exactamente 0.9144 metros|1.0936132983E+00</item>
 
-        <item>Masa / Peso</item>
-        <item>Earth Mass|Mass of the earth|1.6744276388E-25</item>
-        <item>Gram (g)|Gram|1.0000000000E+03</item>
-        <item>Kilogram (kg)|Kilogram|1.0000000000E+00</item>
-        <item>Microgram (&#181;g)|Microgram|1.0000000000E+09</item>
-        <item>Milligram (mg)|Milligram|1.0000000000E+06</item>
-        <item>Ounce (oz)|Ounce|3.5273960000E+01</item>
-        <item>Pound (lb)|Pound|2.2046230000E+00</item>
-        <item>Stone (st)|Stone|1.5747300000E-01</item>
-        <item>Ton (tn)|US Short ton|1.1023110000E-03</item>
-        <item>Ton (long)|UK long ton|9.8420650000E-04</item>
-        <item>Ton (metric)|Metric ton|1.0000000000E-03</item>
+        <item>masa / peso</item>
+        <item>Tierra Masa|masa de la Tierra|1.6744276388E-25</item>
+        <item>gramo (g)|Gram|1.0000000000E+03</item>
+        <item>kilogramo (kg)|Kilogramo|1.0000000000E+00</item>
+        <item>microgramos (&#181;g)|Microgramo|1.0000000000E+09</item>
+        <item>miligramo (mg)|Milligram|1.0000000000E+06</item>
+        <item>onza (oz)|onza|3.5273960000E+01</item>
+        <item>libra (lb)|Libra|2.2046230000E+00</item>
+        <item>Piedra (st)|Piedra|1.5747300000E-01</item>
+        <item>Ton (tn)|US tonelada corta|1.1023110000E-03</item>
+        <item>Ton (largo)|Reino Unido tonelada larga|9.8420650000E-04</item>
+        <item>Ton (métrica)|tonelada métrica|1.0000000000E-03</item>
 
-        <item>Velocidad/</item>
-        <item>Feet per Second (fps)| |1.466667</item>
-        <item>Kilometers per Hour (kph)| |1.609344</item>
-        <item>Knot|A unit of nautical measurement|0.868976</item>
-        <item>Meter per Second (m/s)|Meter per second|4.4704000000E-01</item>
-        <item>Miles per Hour (mph)|Miles per hour|1.0000000000E+00</item>
-        <item>Speed of Light|The speed of light in a vacuum|1.4911649312E-09</item>
+        <item>Velocidad / Velocidad</item>
+        <item>pies por segundo (fps)| |1.466667</item>
+        <item>kilómetros por hora (kph)| |1.609344</item>
+        <item>Nudo | Unidad de medida náutica|0.868976</item>
+        <item>metro por segundo (m/s)|metro por segundo|4.4704000000E-01</item>
+        <item>millas por hora (mph)|Millas por hora|1.0000000000E+00</item>
+        <item>velocidad de la luz|La velocidad de la luz en el vacío|1.4911649312E-09</item>
 
         <item>Temperatura</item>
-        <item>Celsius (&#176;&#067;)|Named after the Swedish astronomer Anders Celsius.
-            The scale places 0 &#176;C as the freezing point of water and 100 &#176;C
-            as the boiling point of water.|1.0000000000E+00|0.0</item>
-        <item>Fahrenheit (&#176;F)|Named after German physicist Gabriel Fahrenheit.
-            The scale places 32  &#176;F as the freezing point of water and 212  &#176;F
-            as the boiling point of water. Used only in the United States, Bahamas, Belize,
-            the Cayman Islands, and Palau.|1.8000000000E+00|32.0</item>
-        <item>Kelvin (K)|Named after the Belfast-born engineer William Lord Kelvin.
-            The scale places 0 K at absolute zero and 273.16 K
-            as the boiling point of water.|1.0000000000E+00|273.15</item>
-        <item>Rankine (&#176;R)|Named after the Glascow University engineer William Rankine.
-            The scale still places 0 &#176;R as absolute zero but uses the same scale as
-            Fahrenheit.|1.8000000000E+00|491.67</item>
+        <item>centígrados (&#176;&#067;)|Llamada así por el astrónomo sueco Anders Celsius.
+            Los lugares escala 0 &#176;C como el punto de agua y 100 &#176;C
+            como el punto de ebullición del agua|1.0000000000E+00|0.0</item>
+        <item>Fahrenheit (&#176;F)|nombre del físico alemán Gabriel Fahrenheit.
+            La escala coloca 32 &#176;F, como el punto de agua y 212 &#176;F
+            como el punto de ebullición del agua. Sólo se utiliza en los Estados Unidos, Bahamas, Belice,
+            las Islas Caimán, y Palau|1.8000000000E+00|32.0</item>
+        <item>Kelvin (K)|nombre del ingeniero nacido en Belfast William Lord Kelvin.
+            La lugares escala 0 K en el cero absoluto y 273,16 K
+            como el punto de ebullición del agua|1.0000000000E+00|273.15</item>
+        <item>Rankine (&#176;R)|nombre del ingeniero de la Universidad de Glasgow William Rankine.
+            La escala todavía coloca 0 &#176;R como el cero absoluto, pero utiliza la misma escala que
+            Fahrenheit|1.8000000000E+00|491.67</item>
 
         <item>Aceleración</item>
-        <item>Ángulo</item>
-        <item>Área</item>
+        <item>metro por segundo al cuadrado (m/s2)| |1.0000000000E+00</item>
+        <item>centímetro por segundo al cuadrado (cm/s2)| |1.0000000000E+02</item>
+        <item>milímetro por segundo al cuadrado (mm/s2)| |1.0000000000E+03</item>
+        <item>Pie por segundo al cuadrado (ft/s2)| |3.2808530000E+00</item>
+        <item>Caída Libre (g)| |1.0197160000E+00</item>
+        <item>Milla por segundo Vivienda (mi/(hs))| |2.2369400000E+00</item>
+
+        <item>ángulo</item>
+        <item>Espacio</item>
         <item>Densidad</item>
         <item>Energía</item>
         <item>Fuerza</item>
         <item>Iluminación</item>
-        <item>Energía</item>
-        <item>Hora</item>
-        <item>Volumen (seco)</item>
+        <item>energía</item>
+        <item>Tiempo</item>
+        <item>Volumen</item> (seco)
     </string-array>
 
     <!-- preferences -->
     <string name="pref_retain">pref_retain</string>
-    <string name="pref_retain_title">Mantenga Valores</string>
+    <string name="pref_retain_title">Mantener los valores</string>
     <string name="pref_retain_summary">Mantener los valores unitarios después de salir de la pantalla</string>
 
 </resources>
