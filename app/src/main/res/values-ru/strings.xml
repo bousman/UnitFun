@@ -1,0 +1,123 @@
+<resources>
+	<string name="app_name">UnitFun</string>
+    <string name="app_author">Автор: Брайан Bousman</string>
+    <string name="title_unit_activity">Unit Conversion</string>
+    <string name="title_settings_activity">Настройки</string>
+    <string name="settings">Настройки</string>
+    <string name="about">About</string>
+    <string name="dummy">Dummy</string>
+    <string name="more_info">подробнее</string>
+    <string name="button_ok">OK</string>
+
+    <!--
+        All unit conversion data is specified in string array "data".
+
+        The title of a section (e.g. "Length", "Mass", "Area") precedes
+        the units for that section.  After "Length" will be array items
+        for "Foot", "Inch", Yard", etc.  Each unit line will have 3 or
+        4 tokens separated by the "|" character.  The first token is the
+        name of the unit (e.g. "Foot").  The second token is a longer
+        description of that unit (use a single space, | |, to indicate
+        that there is no description).  The third and optional fourth are
+        number values to convert from the arbitrary reference unit of
+        this section to that unit.  The conversion is calculated as:
+            value = reference * (third) + (fourth)
+        where (third) is the third token and (fourth) is the fourth
+        token.  If the fourth token is not there it is assumed to be zero.
+        Example: for temperature the reference is Celsius so for Fahrenheit
+            F = C * 1.8000000000E+00 + 32.0       <- |1.8000000000E+00|32.0
+            K = C * 1.0000000000E+00 + 273.15     <- |1.0000000000E+00|273.15
+
+        If there is only one token on a line it is assumed to be the
+        title of a new section.
+
+        Note that the reference value for each section is indeed an
+        arbitrary value.  It can be anything you want just as long as
+        long as the conversion values are worked out to convert from
+        the reference to that unit.  Usually it is easier to make the
+        reference value one of the units, as for Length the reference
+        value is the meter.
+
+        Units       Reference
+        Length      Meter
+        Mass        Kilogram
+        Speed       Miles per Hour
+        Temperature Celsius
+    -->
+    <string-array name="data">
+        <item>Длина</item>
+        <item>сантиметр (см)|Сотая часть метра|1.0000000000E+02</item>
+        <item>Земли диаметр| |7.8476735179E-08</item>
+        <item>Пешеходный (футы)|По международному соглашению именно 0,3048 метра|3.2808398950E+00</item>
+        <item>Ферлонг|одной восьмой мили или 660 футов|4.9709700000E-03</item>
+        <item>дюймовый (в)|Есть двенадцать дюймов в ноге и тридцать шесть дюймов во дворе|3.937007874E+01</item>
+        <item>километр (км)|равна одной тысячи метров|1.0000000000E-03 </item>
+        <item>Свет Год|Расстояние, которое свет проходит в вакууме за один год Джулиан, около 9 триллионов километров|1.0570230000E-16</item>
+        <item>метр (м)|Базовый блок длины в Международной системе единиц (СИ)|1.0000000000E+00</item>
+        <item>Mile (мили)|Равно 1760 ярдов и ровно 1,609.344 метров по международному соглашению|6.2137119224E-04</item>
+        <item>миллиметр (мм)|одна тысячная метра. Есть 25,4 мм дюйма|1.0000000000E+03</item>
+        <item>морскую милю|Ровно 1852 метров или около 6076 футов|5.3995680346E-04</item>
+        <item>Парсек|О 3,26 световых лет|3.2407790000E-17</item>
+        <item>Двор (ярд)|Три ноги или тридцать шесть дюймов. По международному соглашению 1959 именно 0.9144 метра|1.0936132983E+00</item>
+
+        <item>Mass / Вес</item>
+        <item>земляных масс|масса Земли|1.6744276388E-25</item>
+        <item>грам (г)|грам|1.0000000000E+03</item>
+        <item>килограмм (кг)|килограмм|1.0000000000E+00</item>
+        <item>микрограмм (&#181;г)|микрограмм|1.0000000000E+09</item>
+        <item>миллиграмм (мг)|миллиграмм|1.0000000000E+06</item>
+        <item>унция (унция)|унция|3.5273960000E+01</item>
+        <item>Фунт (фунтов)|Фунт|2.2046230000E+00</item>
+        <item>Камень (ст)|Камень|1.5747300000E-01</item>
+        <item>Тон (TN)|США Короткая тонна|1.1023110000E-03</item>
+        <item>Тон (длинный)|Великобритания длинная тонна|9.8420650000E-04</item>
+        <item>Тон (метрика)|тонну|1.0000000000E-03</item>
+
+        <item>Скорость / Скорость</item>
+        <item>футов в секунду (FPS)| |1.466667</item>
+        <item>километров в час (км в час)| |1.609344</item>
+        <item>Узел|Единица измерения морской|0.868976</item>
+        <item>метр в секунду (м / с)|метр в секунду|4.4704000000E-01</item>
+        <item>миль в час (миль в час)|миль в час|1.0000000000E+00</item>
+        <item>Скорость Света|Скорость света в вакууме|1.4911649312E-09</item>
+
+        <item>Температура</item>
+        <item>Цельсия (&#176;&#067;)|Названный в честь шведского астронома Андерса Цельсия.
+            Масштабные места 0 &#176;С, как точки замерзания воды и 100 &#176;C
+            как точка кипения воды |1.0000000000E+00|0.0</item>
+        <item>Фаренгейту (&#176;F)|Названный в честь немецкого физика Габриеля Фаренгейта.
+            Масштабы размещает 32 &#176;F в качестве точки замерзания воды и 212 &#176;F
+            как точки кипения воды. Используется только в Соединенных Штатах, Багамы, Белиз,
+            Каймановы острова и Палау |1.8000000000E+00|32.0 </item>
+        <item>Кельвина (К)|Названный в честь Белфаст-родился инженер Уильям Кельвин.
+            Масштабные мест 0 К при абсолютном нуле и 273,16 K
+            как точка кипения воды |1.0000000000E+00|273.15</item>
+        <item>Ренкина (&#176;r)|Названный в честь инженера Гласкау университета Уильям Ранкина.
+            Масштабы еще места 0 &#176;R, как абсолютному нулю, но использует тот же масштаб, как
+            Фаренгейту|1.8000000000E+00|491.67</item>
+
+        <item>Ускорение</item>
+        <item>метр в секунду в квадрате (м / с2)| |1.0000000000E+00</item>
+        <item>Сантиметр в секунду в квадрате (см / с2)| |1.0000000000E+02</item>
+        <item>миллиметра в секунду в квадрате (мм / с2)| |1.0000000000E+03</item>
+        <item>Фут в секунду в квадрате (фут / с2)| |3.2808530000E+00</item>
+        <item>Free Fall (г)| |1.0197160000E+00</item>
+        <item>милю за HOUS секунду (MI / (HS))| |2.2369400000E+00</item>
+
+        <item>Угол</item>
+        <item>Площадь</item>
+        <item>Плотность</item>
+        <item>Энергия</item>
+        <item>Силы</item>
+        <item>Освещение</item>
+        <item>мощность</item>
+        <item>Время</item>
+        <item>Объем (сухой)</item>
+    </string-array>
+
+    <!-- preferences -->
+    <string name="pref_retain">pref_retain</string>
+    <string name="pref_retain_title">оставить значения</string>
+    <string name="pref_retain_summary">Хранить значения единиц после выхода экран</string>
+
+</resources>
