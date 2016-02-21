@@ -174,6 +174,7 @@ public class Unit implements Parcelable {
     public void setScale(String scale) {
         this.convertFromRefScale = new BigDecimal(scale);
     }
+    public BigDecimal getScale() { return this.convertFromRefScale; }
 
     public void setOffset(String offset) {
         this.offset = new BigDecimal(offset);

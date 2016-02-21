@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private final int SPLASH_DISPLAY_LENGTH = 1500;
+    private final long  SPLASH_DISPLAY_LENGTH = 1500;
+    private final float ROTATION_ANGLE = 360;
+    private final float SCALE_FACTOR = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
         }, SPLASH_DISPLAY_LENGTH);
 
         ImageView graphic = (ImageView)findViewById(R.id.uxGraphic);
-        graphic.animate().rotation(360).setDuration(SPLASH_DISPLAY_LENGTH).start();
+        graphic.animate().rotation(ROTATION_ANGLE).scaleX(SCALE_FACTOR).scaleY(SCALE_FACTOR).setDuration(SPLASH_DISPLAY_LENGTH).start();
         titleView.animate().alpha(1).setDuration(SPLASH_DISPLAY_LENGTH).start();
 
     }

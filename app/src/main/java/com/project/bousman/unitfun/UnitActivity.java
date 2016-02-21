@@ -16,6 +16,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -52,6 +54,9 @@ public class UnitActivity extends AppCompatActivity {
     private boolean mRefValueEmpty = true;
     //! the units to display - title, information, and scale factor
     private ArrayList<Unit> mUnitList;
+    // will get set to the name of the reference unit
+    private String mRefUnitName = "none";
+
 
     /**
      * Calculate new master reference value from this new unit value
@@ -120,6 +125,14 @@ public class UnitActivity extends AppCompatActivity {
         if ( bar != null )
             bar.setDisplayHomeAsUpEnabled(true);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickSnack(view);
+            }
+        });
+
         // get "settings" value for keeping unit values.  If true then will try to set
         // the reference value to what it was when we were last here
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
@@ -158,6 +171,17 @@ public class UnitActivity extends AppCompatActivity {
         // get the measurements for this unit (e.g. foot, inch) and pass them off
         // to get up the main display
         ArrayList<Unit> unitList = b.getParcelableArrayList("unit_data");
+
+        // get name of reference unit.  currently the only way to do this is look for the one
+        // that has a scale factor of 1.0
+        for ( int ii = 0; ii < unitList.size(); ++ii ) {
+            if ( unitList.get(ii).getScale().floatValue() == 1 ) {
+                mRefUnitName = unitList.get(ii).getTitle();
+                break;
+            }
+        }
+
+        // create the display with all the units
         displayListView(unitList);
     }
 
@@ -185,6 +209,13 @@ public class UnitActivity extends AppCompatActivity {
         finish();
         super.onBackPressed();
     }
+
+
+    public void onClickSnack(View view) {
+        Snackbar.make(view, "Reference unit: "+mRefUnitName, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
 
     /**
      * Create the main display with the units of measurement using a custom adapter.
