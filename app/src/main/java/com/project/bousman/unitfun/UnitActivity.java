@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -118,13 +119,6 @@ public class UnitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unit);
 
-        // up/back in the toolbar
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-        ActionBar bar = getSupportActionBar();
-        if ( bar != null )
-            bar.setDisplayHomeAsUpEnabled(true);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,7 +160,20 @@ public class UnitActivity extends AppCompatActivity {
         }
 
         String title = b.getString("unit_title");   // page title
-        getSupportActionBar().setTitle(title);
+
+        // up/back in the toolbar
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        if (Build.VERSION.SDK_INT > 19) {
+            setSupportActionBar(myToolbar);
+            ActionBar bar = getSupportActionBar();
+            if (bar != null) {
+                bar.setTitle(title);
+                bar.setDisplayHomeAsUpEnabled(true);
+            }
+        }
+        else {
+            myToolbar.setVisibility(View.GONE);
+        }
 
         // get the measurements for this unit (e.g. foot, inch) and pass them off
         // to get up the main display
@@ -174,10 +181,12 @@ public class UnitActivity extends AppCompatActivity {
 
         // get name of reference unit.  currently the only way to do this is look for the one
         // that has a scale factor of 1.0
-        for ( int ii = 0; ii < unitList.size(); ++ii ) {
-            if ( unitList.get(ii).getScale().floatValue() == 1 ) {
-                mRefUnitName = unitList.get(ii).getTitle();
-                break;
+        if (unitList != null) {
+            for (int ii = 0; ii < unitList.size(); ++ii) {
+                if (unitList.get(ii).getScale().floatValue() == 1) {
+                    mRefUnitName = unitList.get(ii).getTitle();
+                    break;
+                }
             }
         }
 

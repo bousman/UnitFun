@@ -25,6 +25,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -114,13 +115,17 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
         setContentView(R.layout.activity_main);
 
         // up/back in the toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (Build.VERSION.SDK_INT > 19) {
+            setSupportActionBar(myToolbar);
+            //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        else {
+            myToolbar.setVisibility(View.GONE);
+        }
 
         // load in the unit data from resource strings
         loadDataFromStrings();

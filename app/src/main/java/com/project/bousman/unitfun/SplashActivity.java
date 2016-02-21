@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private final long  SPLASH_DISPLAY_LENGTH = 1500;
+    private final long  SPLASH_DISPLAY_LENGTH = 1000;
     private final float ROTATION_ANGLE = 360;
     private final float SCALE_FACTOR = 4;
 
