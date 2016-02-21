@@ -221,8 +221,17 @@ public class UnitActivity extends AppCompatActivity {
 
 
     public void onClickSnack(View view) {
-        Snackbar.make(view, "Reference unit: "+mRefUnitName, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+        Snackbar snackbar = Snackbar
+                .make(view,"Reference unit: "+mRefUnitName, Snackbar.LENGTH_LONG) /*
+                .setAction("ACTION", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Snackbar snackbar1 = Snackbar.make(view, "additional message", Snackbar.LENGTH_SHORT);
+                        snackbar1.show();
+                    }
+                }) */ ;
+
+        snackbar.show();
     }
 
 
