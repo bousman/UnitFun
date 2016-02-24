@@ -134,7 +134,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         // with titles of all the unit sections.
         ListView myListView = (ListView)findViewById(R.id.main_list);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, mUnitActData.titles());
+                R.layout.main_list, mUnitActData.titles());
+//        android.R.layout.simple_list_item_1, mUnitActData.titles());
         myListView.setAdapter(adapter);
         myListView.setOnItemClickListener(mMessageClickedHandler);
     }
