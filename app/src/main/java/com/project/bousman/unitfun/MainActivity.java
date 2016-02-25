@@ -118,14 +118,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         setContentView(R.layout.activity_main);
 
         // up/back in the toolbar
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        if (Build.VERSION.SDK_INT > 19) {
-            setSupportActionBar(myToolbar);
-            //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        else {
-            myToolbar.setVisibility(View.GONE);
-        }
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(myToolbar);
 
         // load in the unit data from resource strings
         loadDataFromStrings();

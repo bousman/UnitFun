@@ -162,18 +162,14 @@ public class UnitActivity extends AppCompatActivity {
         String title = b.getString("unit_title");   // page title
 
         // up/back in the toolbar
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        if (Build.VERSION.SDK_INT > 19) {
-            setSupportActionBar(myToolbar);
-            ActionBar bar = getSupportActionBar();
-            if (bar != null) {
-                bar.setTitle(title);
-                bar.setDisplayHomeAsUpEnabled(true);
-            }
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.app_bar);
+        myToolbar.setTitle(title);
+        setSupportActionBar(myToolbar);
+        ActionBar bar = getSupportActionBar();
+        if (bar != null) {
+            bar.setDisplayHomeAsUpEnabled(true);
         }
-        else {
-            myToolbar.setVisibility(View.GONE);
-        }
+
 
         // get the measurements for this unit (e.g. foot, inch) and pass them off
         // to get up the main display

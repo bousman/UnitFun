@@ -12,12 +12,13 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         // up/back in the toolbar
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.app_bar);
         myToolbar.setTitle(R.string.title_settings_activity);
         setSupportActionBar(myToolbar);
         ActionBar bar = getSupportActionBar();
-        if ( bar != null )
-           bar.setDisplayHomeAsUpEnabled(true);
+        if (bar != null) {
+            bar.setDisplayHomeAsUpEnabled(true);
+        }
 
         // Display SettingsFragment as the main content
         getFragmentManager().beginTransaction()
