@@ -1,8 +1,10 @@
 package com.project.bousman.unitfun;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,9 +36,13 @@ public class SplashActivity extends AppCompatActivity implements SoundPool.OnLoa
         TextView titleView = (TextView)findViewById(R.id.title_text);
         titleView.setAlpha(0);
 
-        soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-        soundId1 = soundPool.load(this, R.raw.beep_sound, 1);
-        soundPool.setOnLoadCompleteListener(this);
+        // check shared preferences to see if sound should be played
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        if (settings.getBoolean(getString(R.string.pref_sound), false)) {
+            soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+            soundId1 = soundPool.load(this, R.raw.beep_sound, 1);
+            soundPool.setOnLoadCompleteListener(this);
+        }
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -58,6 +64,7 @@ public class SplashActivity extends AppCompatActivity implements SoundPool.OnLoa
 
     @Override
     public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-        soundPool.play(sampleId, 1, 1, 0, 0, 1);
+        final float volume = 0.2f;
+        soundPool.play(sampleId, volume, volume, 0, 0, 1);
     }
 }

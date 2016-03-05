@@ -15,6 +15,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -43,7 +45,7 @@ import java.util.StringTokenizer;
  * It uses a ListView with custom adapter to show the unit name, current value,
  * and an informational button to get a longer description of the unit.
  */
-public class UnitActivity extends AppCompatActivity {
+public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadCompleteListener {
 
     //! Obviously need a custom adapter for the ListView to display each unit item
     private MyCustomAdapter dataAdapter = null;
@@ -57,6 +59,11 @@ public class UnitActivity extends AppCompatActivity {
     private ArrayList<Unit> mUnitList;
     // will get set to the name of the reference unit
     private String mRefUnitName = "none";
+
+    // for sound effect when new values entered by user
+    private int mSoundId1;
+    private static SoundPool mSoundPool;
+    private boolean mPlaySound;
 
 
     /**
@@ -89,6 +96,9 @@ public class UnitActivity extends AppCompatActivity {
         }
 
         if (goodNumber) {
+            if (mPlaySound)
+                mSoundPool.play(mSoundId1, 1, 1, 0, 0, 1);
+
             BigDecimal editValueBD = new BigDecimal(editValue);
             mReferenceValue = editedUnit.calculateReference(editValueBD);
             mRefValueEmpty = false;  // allow values to be put in unit EditText boxes
@@ -131,6 +141,7 @@ public class UnitActivity extends AppCompatActivity {
         // the reference value to what it was when we were last here
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         boolean keep_values = settings.getBoolean(getString(R.string.pref_retain), false);
+        mPlaySound = settings.getBoolean(getString(R.string.pref_sound), false);
 
         // reference value from last time at this particular UnitActivity is passed in
         // (which will be zero on first time or if EditText boxes are empty)
@@ -188,7 +199,18 @@ public class UnitActivity extends AppCompatActivity {
 
         // create the display with all the units
         displayListView(unitList);
+
+        mSoundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+        mSoundId1 = mSoundPool.load(this, R.raw.grunz_success_low, 1);
+        mSoundPool.setOnLoadCompleteListener(this);
     }
+
+
+    @Override
+    public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+        //soundPool.play(sampleId, 1, 1, 0, 0, 1);
+    }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

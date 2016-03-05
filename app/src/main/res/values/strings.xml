@@ -8,6 +8,11 @@
     <string name="dummy">Dummy</string>
     <string name="more_info">more info</string>
     <string name="button_ok">OK</string>
+    <string name="sound_attribution">
+        &#34;Success&#34; sound by &#34;grunz&#34; on freesound.org with
+        Creative Commons attribution license. &#34;success_low.wav&#34;.
+        http://www.freesound.org/people/grunz/sounds/109663/
+    </string>
 
     <!--
         All unit conversion data is specified in string array "data".
@@ -119,5 +124,7 @@
     <string name="pref_retain">pref_retain</string>
     <string name="pref_retain_title">Keep Values</string>
     <string name="pref_retain_summary">Keep unit values after leaving screen</string>
-
+    <string name="pref_sound">pref_sound</string>
+    <string name="pref_sound_title">Sound</string>
+    <string name="pref_sound_summary">Play sound effects</string>
 </resources>
