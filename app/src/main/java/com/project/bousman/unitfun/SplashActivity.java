@@ -1,20 +1,27 @@
 package com.project.bousman.unitfun;
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity implements SoundPool.OnLoadCompleteListener {
 
     private final long  SPLASH_DISPLAY_LENGTH = 1000;
     private final float ROTATION_ANGLE = 360;
     private final float SCALE_FACTOR = 4;
+
+    // for sound effect on splash load
+    private int soundId1;
+    private static SoundPool soundPool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +33,10 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         TextView titleView = (TextView)findViewById(R.id.title_text);
         titleView.setAlpha(0);
+
+        soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+        soundId1 = soundPool.load(this, R.raw.beep_sound, 1);
+        soundPool.setOnLoadCompleteListener(this);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -41,5 +52,12 @@ public class SplashActivity extends AppCompatActivity {
         graphic.animate().rotation(ROTATION_ANGLE).scaleX(SCALE_FACTOR).scaleY(SCALE_FACTOR).setDuration(SPLASH_DISPLAY_LENGTH).start();
         titleView.animate().alpha(1).setDuration(SPLASH_DISPLAY_LENGTH).start();
 
+
+    }
+
+
+    @Override
+    public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+        soundPool.play(sampleId, 1, 1, 0, 0, 1);
     }
 }
