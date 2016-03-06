@@ -52,6 +52,7 @@
     <string-array name="data">
         <item>Длина</item>
         <item>сантиметр (см)|Сотая часть метра|1.0000000000E+02</item>
+        <item>Chain|A chain is a unit of length that measures 66 feet.  It was used historically in Britain.|4.9709700000E-02</item>
         <item>Земли диаметр| |7.8476735179E-08</item>
         <item>Пешеходный (футы)|По международному соглашению именно 0,3048 метра|3.2808398950E+00</item>
         <item>Ферлонг|одной восьмой мили или 660 футов|4.9709700000E-03</item>
@@ -80,6 +81,8 @@
 
         <item>Скорость / Скорость</item>
         <item>футов в секунду (FPS)| |1.466667</item>
+        <item>Furlong per fortnight| |6.0000000000E+01</item>
+        <item>Inches per hour| |6.3360000000E+04</item>
         <item>километров в час (км в час)| |1.609344</item>
         <item>Узел|Единица измерения морской|0.868976</item>
         <item>метр в секунду (м / с)|метр в секунду|4.4704000000E-01</item>
@@ -109,15 +112,26 @@
         <item>Free Fall (г)| |1.0197160000E+00</item>
         <item>милю за HOUS секунду (MI / (HS))| |2.2369400000E+00</item>
 
+        <item>Angle</item>
+        <item>Area</item>
+        <item>Density</item>
+        <item>Energy</item>
+        <item>Force</item>
+        <item>Illumination</item>
+        <item>Power</item>
+        <item>Time</item>
+
         <item>Угол</item>
-        <item>Площадь</item>
-        <item>Плотность</item>
-        <item>Энергия</item>
-        <item>Силы</item>
-        <item>Освещение</item>
-        <item>мощность</item>
-        <item>Время</item>
-        <item>Объем (сухой)</item>
+        <item>Barrel| |1.0</item>
+        <item>Bushel| |3.281219</item>
+        <item>Cubic Foot (ft3)| |4.0833</item>
+        <item>Cubic Inch (in3)| |7055.9424</item>
+        <item>Cubic Meter (m3)| |0.11562618</item>
+        <item>Cubic Yard (yd3)| |0.15123333</item>
+        <item>Liter| |115.6271</item>
+        <item>Peck| |13.12488</item>
+        <item>Pint (pt)| |209.998</item>
+        <item>Quart| |104.999</item>
     </string-array>
 
     <!-- preferences -->
