@@ -26,6 +26,17 @@
         android:minWidth="8dp"
         android:src="@android:drawable/ic_menu_info_details"/>
 
+    <ImageView
+        android:contentDescription="@string/more_info"
+        android:id="@+id/wikiInfoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/infoButton"
+        android:layout_marginRight="@dimen/unit_margin_right"
+        android:minHeight="8dp"
+        android:minWidth="8dp"
+        android:src="@android:drawable/ic_menu_help"/>
+
     <EditText android:id="@+id/value"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"

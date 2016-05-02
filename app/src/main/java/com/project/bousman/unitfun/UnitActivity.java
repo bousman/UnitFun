@@ -26,6 +26,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +36,19 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 
 
@@ -60,10 +72,20 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
     // will get set to the name of the reference unit
     private String mRefUnitName = "none";
 
+    private String mCurrentTitle = null;
+    private static Bundle mSavedBundle = new Bundle();
+    private static boolean mRestoreState = false;
+
     // for sound effect when new values entered by user
     private int mSoundId1;
     private static SoundPool mSoundPool;
     private boolean mPlaySound;
+
+    private final OkHttpClient mOkHttpClient;
+
+    public UnitActivity() {
+        mOkHttpClient = new OkHttpClient();
+    }
 
 
     /**
@@ -146,10 +168,19 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
         // reference value from last time at this particular UnitActivity is passed in
         // (which will be zero on first time or if EditText boxes are empty)
         Bundle b = getIntent().getExtras();
+        if ( b == null ) {
+            Log.d("onCreate","empty bundle so get from saved state");
+            b = mSavedBundle;
+            if ( b == null ) {
+                Log.d("onCreate", "bundle still empty");
+                Log.d("onCreate", "bundle: "+b.toString());
+            }
+        }
 
         // the reference value is part of the saved state so when the screen
         // rotates we won't lose our values
         if ( savedInstanceState != null ) {
+            Log.d("onCreate","savedInstanceState");
             try {
                 double d = savedInstanceState.getDouble("reference");
                 mReferenceValue = new BigDecimal(d);
@@ -158,23 +189,25 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
                 e.printStackTrace();
             }
         } else {
+            Log.d("onCreate","no saved state");
             // if the "keep values" setting is turned on then use the reference value
             // from the previous call to this activity that is being passed back through
             // the Bundle
-            if ( keep_values ) {
+            if ( keep_values || mRestoreState ) {
                 mReferenceValue = new BigDecimal(b.getDouble("reference"));
-                mRefValueEmpty = !b.getBoolean("reference_set");
+                mRefValueEmpty = b.getBoolean("reference_empty");
+                mRestoreState = false;
             } /*else {
                 // This is first time into this activity or the "keep values" setting is off
                 // so use default values
             } */
         }
 
-        String title = b.getString("unit_title");   // page title
+        mCurrentTitle = b.getString("unit_title");   // page title
 
         // up/back in the toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.app_bar);
-        myToolbar.setTitle(title);
+        myToolbar.setTitle(mCurrentTitle);
         setSupportActionBar(myToolbar);
         ActionBar bar = getSupportActionBar();
         if (bar != null) {
@@ -212,13 +245,23 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
     }
 
 
+    public void createSavedState(Bundle savedState) {
+        savedState.putDouble("reference",mReferenceValue.doubleValue());
+        savedState.putBoolean("reference_empty", mRefValueEmpty);
+        savedState.putString("unit_title", mCurrentTitle);
+        savedState.putParcelableArrayList("unit_data", mUnitList);
+    }
+
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Log.d("onSaveInstanceState", "true");
         // put the current reference value into saved state so when activity comes back
         // all of the units have the same value as they do now
-        outState.putDouble("reference",mReferenceValue.doubleValue());
-        outState.putBoolean("reference_empty",mRefValueEmpty);
+        //outState.putDouble("reference",mReferenceValue.doubleValue());
+        //outState.putBoolean("reference_empty",mRefValueEmpty);
+        createSavedState(outState);
     }
 
     /**
@@ -229,9 +272,10 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
      */
     @Override
     public void onBackPressed() {
+        Log.d("onBackPressed","true");
         Intent intent = new Intent();
         intent.putExtra("reference", mReferenceValue.doubleValue());
-        intent.putExtra("reference_set", !mRefValueEmpty);
+        intent.putExtra("reference_empty", mRefValueEmpty);
         setResult(Activity.RESULT_OK, intent);
         finish();
         super.onBackPressed();
@@ -283,6 +327,7 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
             public TextView title;  //*< title of the unit (e.g. Foot)
             public EditText value;  //*< current value of the unit (e.g. 1.5439)
             public ImageView info;  //*< info button to get dialog with long description of unit
+            public ImageView wiki;  //*< wiki button to get wikipedia info
         }
 
         // constructor must have array of Unit objects to fill out ListView
@@ -307,6 +352,7 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
                 viewHolder.title = (TextView)view.findViewById(R.id.unitTitle);
                 viewHolder.value = (EditText)view.findViewById(R.id.value);
                 viewHolder.info  = (ImageView)view.findViewById(R.id.infoButton);
+                viewHolder.wiki = (ImageView)view.findViewById(R.id.wikiInfoButton);
 
                 // attach a listener so when user is done entering a number we can update values
                 viewHolder.value.setOnClickListener(new View.OnClickListener() {
@@ -325,16 +371,26 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
                         createInfoDialog(infoUnit.getTitle(), infoUnit.getDescription());
                     }
                 });
+                // attach a listener for the 'wiki' button
+                viewHolder.wiki.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        ImageView iButton = (ImageView) v;
+                        Unit infoUnit = (Unit) iButton.getTag();
+                        getWikiContent(infoUnit.getWiki());
+                    }
+                });
 
                 view.setTag(viewHolder);
                 viewHolder.value.setTag(unit);
                 viewHolder.info.setTag(unit);
+                viewHolder.wiki.setTag(unit);
             } else {
                 view = convertView;
                 ViewHolder holder = (ViewHolder)view.getTag();
                 // clickable items need a link to the unit
                 holder.value.setTag(unit);
                 holder.info.setTag(unit);
+                holder.wiki.setTag(unit);
             }
 
             // unique actions for every view go here
@@ -349,9 +405,14 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
                 }
                 // if long description not there, remove the little (i) button
                 if ( unit.emptyDescription() ) {
-                    holder.info.setVisibility(View.GONE);
+                    holder.info.setVisibility(View.INVISIBLE);
                 } else {
                     holder.info.setVisibility(View.VISIBLE);
+                }
+                if ( unit.emptyWiki() ) {
+                    holder.wiki.setVisibility(View.INVISIBLE);
+                } else {
+                    holder.wiki.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -399,6 +460,7 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
      *           note: must be a single space as "||" not parsed correctly by tokenizer
      *  token 3: scale factor, how many of this unit are in a reference unit
      *  token 4: optional, added during the conversion such as the Celsius to Fahrenheit
+     *  token 5: optional, the Wikipedia web link for content about this unit
      *
      * @param input   the resource string, such as "Inch|an inch is...|3.9370080000E+01"
      * @return        the input string broken up into tokens.  e.g. {[Inch],[an inch is...],[3.9370080000E+01]}
@@ -411,4 +473,71 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
         }
         return out;
     }
+
+
+
+    private void getWikiContent(String theUnit)
+    {
+        mSavedBundle.clear();
+        createSavedState(mSavedBundle);
+        mRestoreState = true;
+        //Log.d("getWikiContent", "bundle: " + mSavedBundle.toString());
+
+        Request request = new Request.Builder()
+                .url("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles="+theUnit)
+                .build();
+
+        Call call = mOkHttpClient.newCall(request);
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Log.d("okhttp", "failed!");
+                Intent intent = new Intent(getApplicationContext(), WikiActivity.class);
+                intent.putExtra("html", "No Wikipedia data available");
+                startActivity(intent);
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                if (!response.isSuccessful())
+                    throw new IOException("Unexpected code " + response);
+/*
+                Headers responseHeaders = response.headers();
+
+                for (int i = 0; i < responseHeaders.size(); i++) {
+                    Log.d("okhttp", responseHeaders.name(i) + ": " + responseHeaders.value(i));
+                }
+*/
+                String body = response.body().string();
+                //Log.d("okhttp", body);
+
+                try {
+                    JSONObject json = new JSONObject(body);
+                    JSONObject query = json.getJSONObject("query");
+                    JSONObject pages = query.getJSONObject("pages");
+                    // below {"query":{"pages":{ is another object with a page ID.  We don't know
+                    // what this is so simply get an iterator to get the first child and use that
+                    int nkey = pages.length();
+                    //Log.d("wiki","length="+nkey);
+                    if (nkey > 0) {
+                        Iterator<String> keyit = pages.keys();
+                        String mainKey = keyit.next();
+                        // now we have key below "pages" we can get this child object
+                        JSONObject collection = pages.getJSONObject(mainKey);
+                        // below that there are several pairs of data and we want "extract":"..."
+                        String data = collection.getString("extract");
+
+                        Intent intent = new Intent(getApplicationContext(), WikiActivity.class);
+                        intent.putExtra("html", data);
+                        startActivity(intent);
+                    }
+                } catch (JSONException e) {
+                    Log.d("JSON", "error");
+                }
+
+            }
+        });
+    }
+
 }

@@ -3,6 +3,7 @@ package com.project.bousman.unitfun;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,14 +49,16 @@ public class Unit implements Parcelable {
     // sometimes an offset value is needed in addition to a scale when converting
     // units, as with temperature.  Normally it is zero.
     private BigDecimal offset = new BigDecimal("0.0");
+    private String wikiTitle = "";
 
 
     @SuppressWarnings("unused")
-    public Unit(int id, String title, String description, String scale, String offset) {
+    public Unit(int id, String title, String description, String scale, String offset, String wiki) {
         super();
         this.id = id;
         setTitle(title);
         setDescription(description);
+        setWiki(wiki);
 
         try {
             this.convertFromRefScale = new BigDecimal(scale);
@@ -69,7 +72,7 @@ public class Unit implements Parcelable {
      * Create a Unit from the token strings {title,description,scale,offset}
      * Normally a Unit has the title, description, and scale factor.  The offset usually is
      * not needed for most conversions.
-     * The ArrayList can be from 0 to 4 in size.  0 means no values which results in default
+     * The ArrayList can be from 0 to 5 in size.  0 means no values which results in default
      * values of a Unit with "error" title.
      *
      * @param id       id number to use for this unit
@@ -78,17 +81,21 @@ public class Unit implements Parcelable {
     public Unit( int id, ArrayList<String> tokens ) {
         super();
         this.id = id;
-        if ( tokens.size() >= 1 ) {
+        int tsize = tokens.size();
+        if ( tsize >= 1 ) {
             setTitle(tokens.get(0));
         }
-        if ( tokens.size() >= 2 ) {
+        if ( tsize >= 2 ) {
             setDescription(tokens.get(1));
         }
-        if ( tokens.size() >= 3 ) {
+        if ( tsize >= 3 ) {
             setScale(tokens.get(2));
         }
-        if ( tokens.size() >= 4 ) {
+        if ( tsize >= 4 ) {
             setOffset(tokens.get(3));
+        }
+        if ( tsize >= 5 ) {
+            setWiki(tokens.get(4));
         }
     }
 
@@ -98,6 +105,7 @@ public class Unit implements Parcelable {
                 + "; Title : " + title
                 + "; Scale : " + convertFromRefScale.toString()
                 + "; Offset : " + offset.toString()
+                + "; Wiki : " + wikiTitle
                 + " }";
     }
 
@@ -109,6 +117,7 @@ public class Unit implements Parcelable {
             jsonObj.put("description", description);
             jsonObj.put("scale",convertFromRefScale.doubleValue());
             jsonObj.put("offset",offset.doubleValue());
+            jsonObj.put("wiki", wikiTitle);
 
             return jsonObj.toString();
         }
@@ -125,6 +134,7 @@ public class Unit implements Parcelable {
         description = in.readString();
         convertFromRefScale = (BigDecimal) in.readValue(BigDecimal.class.getClassLoader());
         offset = (BigDecimal) in.readValue(BigDecimal.class.getClassLoader());
+        wikiTitle = in.readString();
     }
 
     @Override
@@ -139,6 +149,7 @@ public class Unit implements Parcelable {
         dest.writeString(description);
         dest.writeValue(convertFromRefScale);
         dest.writeValue(offset);
+        dest.writeString(wikiTitle);
     }
 
     @SuppressWarnings("unused")
@@ -177,7 +188,18 @@ public class Unit implements Parcelable {
     public BigDecimal getScale() { return this.convertFromRefScale; }
 
     public void setOffset(String offset) {
-        this.offset = new BigDecimal(offset);
+        if (offset != null) {
+            try {
+                this.offset = new BigDecimal(offset);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    public void setWiki(String wiki) { this.wikiTitle = wiki; }
+    public String getWiki() { return wikiTitle; }
+    public boolean emptyWiki() {
+        return ("".equals(this.wikiTitle));
     }
 
     /**
