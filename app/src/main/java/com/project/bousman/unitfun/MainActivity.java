@@ -38,9 +38,22 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Headers;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
@@ -50,6 +63,12 @@ import java.util.ArrayList;
  * as a button to launch the page for that section.
  */
 public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
+
+    private final OkHttpClient mOkHttpClient;
+
+    public MainActivity() {
+        mOkHttpClient = new OkHttpClient();
+    }
 
     /**
      * Class UnitActivityData holds data for each UnitActivity page.
@@ -132,6 +151,11 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
 //        android.R.layout.simple_list_item_1, mUnitActData.titles());
         myListView.setAdapter(adapter);
         myListView.setOnItemClickListener(mMessageClickedHandler);
+
+        //TODO remove this test code
+        //testWiki("Metre");
+        //testWiki("Centimetre");
+        testWiki("Foot_(unit)");
     }
 
     /**
@@ -322,4 +346,66 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         mUnitActData.setReference(position, referenceValue);
         mUnitActData.setHasRefSet(position, referenceSet);
     }
+
+
+    private void testWiki(String theUnit)
+    {
+        Request request = new Request.Builder()
+                .url("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles="+theUnit)
+                .build();
+
+        Call call = mOkHttpClient.newCall(request);
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Log.d("okhttp", "failed!");
+                TextView ux = (TextView)findViewById(R.id.uxWikiText);
+                ux.setText("Could not get Wikipedia page!");
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                if (!response.isSuccessful())
+                    throw new IOException("Unexpected code " + response);
+/*
+                Headers responseHeaders = response.headers();
+
+                for (int i = 0; i < responseHeaders.size(); i++) {
+                    Log.d("okhttp", responseHeaders.name(i) + ": " + responseHeaders.value(i));
+                }
+*/
+                String body = response.body().string();
+                //Log.d("okhttp", body);
+
+                try {
+                    JSONObject json = new JSONObject(body);
+                    JSONObject query = json.getJSONObject("query");
+                    JSONObject pages = query.getJSONObject("pages");
+                    // below {"query":{"pages":{ is another object with a page ID.  We don't know
+                    // what this is so simply get an iterator to get the first child and use that
+                    int nkey = pages.length();
+                    //Log.d("wiki","length="+nkey);
+                    if (nkey > 0)
+                    {
+                        Iterator<String> keyit = pages.keys();
+                        String mainKey = keyit.next();
+                        // now we have key below "pages" we can get this child object
+                        JSONObject collection = pages.getJSONObject(mainKey);
+                        // below that there are several pairs of data and we want "extract":"..."
+                        String data = collection.getString("extract");
+
+                        //TODO remove this test code
+                        Intent intent = new Intent(getApplicationContext(), WikiActivity.class);
+                        intent.putExtra("html",data);
+                        startActivity(intent);
+                    }
+                } catch (JSONException e) {
+                    Log.d("JSON","error");
+                }
+
+            }
+        });
+    }
+
 }

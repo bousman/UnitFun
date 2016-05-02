@@ -3,6 +3,9 @@
     package="com.project.bousman.unitfun" >
     android:versionCode="0"
     android:versionName="0.7.1"
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/unitfun"
@@ -10,23 +13,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base" >
         <activity android:name=".MainActivity" >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".UnitActivity"
             android:label="@string/title_unit_activity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity" >
+
             <!-- The meta-data element is needed for versions lower than 4.1 -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity
-            android:name=".SettingsActivity" >
+        <activity android:name=".SettingsActivity" >
             android:label="@string/title_settings_activity"
             android:parentActivityName=".MainActivity">
             <!-- The meta-data element is needed for versions lower than 4.1 -->
@@ -37,8 +40,16 @@
         <activity android:name=".SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".WikiActivity" >
+            android:label="Wiki Results"
+            android:parentActivityName=".UnitActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UnitActivity" />
         </activity>
     </application>
 
