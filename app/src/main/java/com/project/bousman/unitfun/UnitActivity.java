@@ -263,10 +263,14 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_facebook:
-                // User chose the "Settings" item, show the app settings UI...
                 Log.d("onOptions","facebook");
                 Intent intent = new Intent(UnitActivity.this, FacebookActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.action_random:
+                Log.d("onOptions","random");
+                Intent intentran = new Intent(UnitActivity.this, SensorActivity.class);
+                startActivity(intentran);
                 return true;
 
             default:
