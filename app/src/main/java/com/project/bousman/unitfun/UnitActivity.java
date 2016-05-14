@@ -28,6 +28,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -242,6 +245,36 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
     @Override
     public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
         //soundPool.play(sampleId, 1, 1, 0, 0, 1);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //Toast.makeText(this, "onCreateOptionsMenu", Toast.LENGTH_LONG).show();
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.unit_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_facebook:
+                // User chose the "Settings" item, show the app settings UI...
+                Log.d("onOptions","facebook");
+                Intent intent = new Intent(UnitActivity.this, FacebookActivity.class);
+                startActivity(intent);
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
 
