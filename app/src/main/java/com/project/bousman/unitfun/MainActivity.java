@@ -45,13 +45,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.okhttp.Call;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.Headers;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -127,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     // arrays when UnitActivity was launched.  This is used in onActivityResult
     // to know which page it just returned from
     private int mLastPosition = 0;
+
+    public double gPassthroughValue = 0.;
 
 
     @Override

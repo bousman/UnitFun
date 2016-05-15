@@ -14,6 +14,8 @@
         http://www.freesound.org/people/grunz/sounds/109663/
     </string>
     <string name="facebook_app_id">497063020495883</string>
+    <string name="grab_value">Grab A Value</string>
+    <string name="current_value">Current: </string>
 
     <!--
         All unit conversion data is specified in string array "data".
@@ -51,10 +53,17 @@
         Temperature Celsius
     -->
     <string-array name="data">
+        <item>Angle</item>
+        <item>Degree|Degree|1.0000000000E+00</item>
+        <item>Radian|Radian|0.0174530000E+00</item>
+        <item>Grad|Radian|1.11111111E+00</item>
+
+        <item>Area</item>
+
         <item>Length</item>
         <item>Centimeter (cm)|One hundredth of a meter|1.0000000000E+02| |Centimetre</item>
         <item>Chain|A chain is a unit of length that measures 66 feet.  It was used historically in Britain.|4.9709700000E-02| |Chain_(unit)</item>
-        <item>Earth Diameter| |7.8476735179E-08</item>
+        <item>Earth Diameter|Average diameter of the earth|7.8476735179E-08| |Earth_Diameter</item>
         <item>Foot (ft)|By international agreement is exactly 0.3048 meters|3.2808398950E+00| |Foot_(unit)</item>
         <item>Furlong|One eighth of a mile or 660 feet|4.9709700000E-03| |Furlong</item>
         <item>Inch (in)|There are twelve inches in a foot and thirty six inches in a yard|3.937007874E+01| |Inch</item>
@@ -112,9 +121,7 @@
 		<item>Foot per second squared (ft/s2)| |3.2808530000E+00</item>
 		<item>Free Fall (g)| |1.0197160000E+00</item>
 		<item>Mile per hour second (mi/(hs))| |2.2369400000E+00</item>
-		
-        <item>Angle</item>
-        <item>Area</item>
+
         <item>Density</item>
         <item>Energy</item>
         <item>Force</item>

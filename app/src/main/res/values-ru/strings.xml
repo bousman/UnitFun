@@ -13,6 +13,9 @@
         Creative Commons attribution license. &#34;success_low.wav&#34;.
         http://www.freesound.org/people/grunz/sounds/109663/
     </string>
+    <string name="facebook_app_id">497063020495883</string>
+    <string name="grab_value">Grab A Value</string>
+    <string name="current_value">Current: </string>
 
     <!--
         All unit conversion data is specified in string array "data".

@@ -168,11 +168,12 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
         boolean keep_values = settings.getBoolean(getString(R.string.pref_retain), false);
         mPlaySound = settings.getBoolean(getString(R.string.pref_sound), false);
 
+
         // reference value from last time at this particular UnitActivity is passed in
         // (which will be zero on first time or if EditText boxes are empty)
         Bundle b = getIntent().getExtras();
         if ( b == null ) {
-            Log.d("onCreate","empty bundle so get from saved state");
+            Log.d("UnitActivity onCreate","empty bundle so get from saved state");
             b = mSavedBundle;
             if ( b == null ) {
                 Log.d("onCreate", "bundle still empty");
@@ -183,7 +184,7 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
         // the reference value is part of the saved state so when the screen
         // rotates we won't lose our values
         if ( savedInstanceState != null ) {
-            Log.d("onCreate","savedInstanceState");
+            Log.d("UnitActivity onCreate","savedInstanceState");
             try {
                 double d = savedInstanceState.getDouble("reference");
                 mReferenceValue = new BigDecimal(d);
@@ -192,7 +193,7 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
                 e.printStackTrace();
             }
         } else {
-            Log.d("onCreate","no saved state");
+            Log.d("UnitActivity onCreate","no saved state");
             // if the "keep values" setting is turned on then use the reference value
             // from the previous call to this activity that is being passed back through
             // the Bundle
@@ -204,6 +205,13 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
                 // This is first time into this activity or the "keep values" setting is off
                 // so use default values
             } */
+        }
+
+        if (Global.mRefValueSet) {
+            mReferenceValue = new BigDecimal(Global.mNewRefValue);
+            mRefValueEmpty = false;
+            //Log.d("UnitActivity","Set new ref = " + mReferenceValue.toString());
+            Global.mRefValueSet = false;
         }
 
         mCurrentTitle = b.getString("unit_title");   // page title
@@ -261,6 +269,10 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        mSavedBundle.clear();
+        createSavedState(mSavedBundle);
+        mRestoreState = true;
+
         switch (item.getItemId()) {
             case R.id.action_facebook:
                 Log.d("onOptions","facebook");
@@ -270,7 +282,8 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
             case R.id.action_random:
                 Log.d("onOptions","random");
                 Intent intentran = new Intent(UnitActivity.this, SensorActivity.class);
-                startActivity(intentran);
+                startActivityForResult(intentran, SENSOR_REQUEST_CODE);
+                //startActivity(intentran);
                 return true;
 
             default:
@@ -309,13 +322,45 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
      */
     @Override
     public void onBackPressed() {
-        Log.d("onBackPressed","true");
+        Log.d("onBackPressed", "true");
         Intent intent = new Intent();
         intent.putExtra("reference", mReferenceValue.doubleValue());
         intent.putExtra("reference_empty", mRefValueEmpty);
         setResult(Activity.RESULT_OK, intent);
         finish();
         super.onBackPressed();
+    }
+
+    private int SENSOR_REQUEST_CODE = 1;
+
+    /**
+     * This is called when the unit section activity is finished.
+     *
+     * When the unit activity finishes it will return back the current reference
+     * value and if there is a value set so that it can be passed back the next
+     * time that unit activity is launched.
+     *
+     * @param requestCode   code passed to Activity when it is launched
+     * @param resultCode    result of the activity (expect RESULT_OK)
+     * @param data          contains data bundle with "reference" and "reference_empty" used
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SENSOR_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                //Log.d("Sensor","onActivityResult");
+                Bundle b = data.getExtras();
+                if (b != null) {
+                    // get reference value from UnitActivity we just came back from
+                    // and save it off so it can be restored next time user goes there
+                    mReferenceValue = new BigDecimal(b.getDouble("value"));
+                    //Log.d("onActivityresult","value = " + mReferenceValue.toString());
+                    mRefValueEmpty = false;
+                    mRestoreState = false;
+                }
+            }
+        }
     }
 
 
@@ -531,7 +576,7 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
             public void onFailure(Request request, IOException e) {
                 Log.d("okhttp", "failed!");
                 Intent intent = new Intent(getApplicationContext(), WikiActivity.class);
-                intent.putExtra("html", "No Wikipedia data available");
+                intent.putExtra("html", "No Wikipedia data available (offline?)");
                 startActivity(intent);
             }
 
@@ -539,6 +584,7 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
             public void onResponse(Response response) throws IOException {
                 if (!response.isSuccessful())
                     throw new IOException("Unexpected code " + response);
+                //Log.d("okhttp", "good response!");
 /*
                 Headers responseHeaders = response.headers();
 
@@ -549,6 +595,7 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
                 String body = response.body().string();
                 //Log.d("okhttp", body);
 
+                String data = "No Wikipedia data available";
                 try {
                     JSONObject json = new JSONObject(body);
                     JSONObject query = json.getJSONObject("query");
@@ -563,16 +610,15 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
                         // now we have key below "pages" we can get this child object
                         JSONObject collection = pages.getJSONObject(mainKey);
                         // below that there are several pairs of data and we want "extract":"..."
-                        String data = collection.getString("extract");
-
-                        Intent intent = new Intent(getApplicationContext(), WikiActivity.class);
-                        intent.putExtra("html", data);
-                        startActivity(intent);
+                        data = collection.getString("extract");
                     }
                 } catch (JSONException e) {
                     Log.d("JSON", "error");
                 }
 
+                Intent intent = new Intent(getApplicationContext(), WikiActivity.class);
+                intent.putExtra("html", data);
+                startActivity(intent);
             }
         });
     }

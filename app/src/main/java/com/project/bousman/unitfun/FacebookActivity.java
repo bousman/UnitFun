@@ -1,9 +1,11 @@
 package com.project.bousman.unitfun;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
@@ -25,9 +27,9 @@ public class FacebookActivity extends AppCompatActivity {
 
         if (ShareDialog.canShow(ShareLinkContent.class)) {
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                    .setContentTitle("Android III Class")
-                    .setContentDescription("Provide an in-depth view of the many interfaces available to Android")
-                    .setContentUrl(Uri.parse("http://cstructor.com/Home/Details/46"))
+                    .setContentTitle("UnitFun")
+                    .setContentDescription("Fun little program to convert units of measurement")
+                    .setContentUrl(Uri.parse("http://UnitFun.info/"))
                     .build();
 
             shareDialog.show(linkContent);
@@ -39,5 +41,15 @@ public class FacebookActivity extends AppCompatActivity {
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        onBackPressed();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        Log.d("FacebookActivity", "onBackPressed");
+        finish();
+        super.onBackPressed();
     }
 }
