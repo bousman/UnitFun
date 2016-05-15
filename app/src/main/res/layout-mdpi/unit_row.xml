@@ -36,7 +36,7 @@
         android:layout_marginRight="@dimen/unit_margin_right"
         android:minHeight="8dp"
         android:minWidth="8dp"
-        android:src="@android:drawable/ic_menu_help"/>
+        android:src="@drawable/wikipedia_icon"/>
 
     <EditText android:id="@+id/value"
         android:layout_width="match_parent"
