@@ -17,6 +17,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -275,12 +277,17 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
 
         switch (item.getItemId()) {
             case R.id.action_facebook:
-                Log.d("onOptions","facebook");
-                Intent intent = new Intent(UnitActivity.this, FacebookActivity.class);
-                startActivity(intent);
+                //Log.d("onOptions","facebook");
+                if (checkNetworkConnection()) {
+                    Intent intent = new Intent(UnitActivity.this, FacebookActivity.class);
+                    startActivity(intent);
+                } else {
+                    createInfoDialog("Network", "Internet connection not detected!");
+                }
+
                 return true;
             case R.id.action_random:
-                Log.d("onOptions","random");
+                //Log.d("onOptions","random");
                 Intent intentran = new Intent(UnitActivity.this, SensorActivity.class);
                 startActivityForResult(intentran, SENSOR_REQUEST_CODE);
                 //startActivity(intentran);
@@ -560,6 +567,12 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
 
     private void getWikiContent(String theUnit)
     {
+        if (!checkNetworkConnection())
+        {
+            createInfoDialog("Network", "Internet connection not detected!");
+            return;
+        }
+
         mSavedBundle.clear();
         createSavedState(mSavedBundle);
         mRestoreState = true;
@@ -613,7 +626,10 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
                         data = collection.getString("extract");
                     }
                 } catch (JSONException e) {
-                    Log.d("JSON", "error");
+                    // an error here probably means Wikipedia request did not get expected response
+                    // perhaps the Wiki label being sent is not correct, or device offline
+                    //Log.d("JSON", "error");
+                    //Log.d("okhttp","Body: "+body);
                 }
 
                 Intent intent = new Intent(getApplicationContext(), WikiActivity.class);
@@ -621,6 +637,16 @@ public class UnitActivity extends AppCompatActivity implements SoundPool.OnLoadC
                 startActivity(intent);
             }
         });
+    }
+
+
+    public boolean checkNetworkConnection() {
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null){
+            return activeNetwork.isConnectedOrConnecting();
+        }
+        return false;
     }
 
 }
